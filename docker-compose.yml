@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: voicemeeter-frontend
     ports:
-      - "9897:3000"
+      - "${FRONTEND_PORT:-9897}:3000"
     environment:
       - NODE_ENV=production
     restart: unless-stopped
@@ -18,12 +18,12 @@ services:
       dockerfile: Dockerfile
     container_name: voicemeeter-backend
     ports:
-      - "9898:3001"
+      - "${BACKEND_PORT:-9898}:3001"
     environment:
       # Change this to your Windows Host IP address if Docker cannot bridge to it via generic localhost
       # Ensure VoiceMeeter VBAN stream is listening on port 6980 and Stream1 is accepting commands
-      - VOICEMEETER_IP=host.docker.internal
-      - VOICEMEETER_VBAN_PORT=6980
+      - VOICEMEETER_IP=${VOICEMEETER_IP:-host.docker.internal}
+      - VOICEMEETER_VBAN_PORT=${VOICEMEETER_VBAN_PORT:-6980}
       - PORT=3001
     # Extra privileges needed for host.docker.internal DNS resolution in some Docker environments
     extra_hosts:
